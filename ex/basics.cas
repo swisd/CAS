@@ -1,0 +1,170 @@
+:: CMDBIOS Action Scripting Language
+
+:: echo
+echo hello world
+
+:: set variable
+stvar a 0
+
+:: get variable
+gtvar a
+
+:: clear variable
+clvar a
+:: can clear to another int (replace)
+clvar a 2
+
+:: stvar also has arithmetic
+stvar a 10
+stvar b 5
+
+stvar st:a c a + b
+
+gtvar c
+
+:: possible operators are + - / *
+:: math function will come soon
+
+:: stvar also has logical operators
+stvar a true
+stvar b false
+
+stvar st:l c and !a! !a!
+:: true
+
+stvar st:l c or !a! !b!
+:: true
+
+stvar st:l c not !a!
+::false
+
+:: for logic, variables must have variable syntax (!<var>!)
+
+:: because of how odd stvar is, algebraic/math set
+:: is referred to normally, but logical set is
+:: referred to as "setting <variable> as <operator> across <var_a> and <var_b>"
+::   -- ... set c as OR across a and b ...
+::
+:: but not is referred to as "setting <variable> as the NOT of <var_a>"
+
+
+:: if statement
+if eqt 2 2 stvar out true
+
+:: also accept variables
+if eqt !a! !a! stvar out true
+
+:: if you want to have a false condition,
+:: set output var to false before statement
+stvar output_var false
+if eqt !var_a! !var_b! stvar output_var true
+:: if statement will echo false if eval is false.
+
+:: more operators for if
+:: eqt   ==
+:: get   >=
+:: let   <=
+:: ls    <
+:: gt    >
+:: net   !=
+
+::For loop
+for 1 10 1 gtvar i
+::  start, stop, step
+:: `gtvar i` gets index
+stvar a 9
+
+for 1 !a! 1 gtvar i
+
+
+:: compound statement (doesn't work yet!)
+stvar a 5
+stvar b 2
+for 1 !a! 1 if eqt !i! !a! echo true
+
+:: if you dont have anything printing during a
+:: for loop, sudh as a stvar, you can make it
+:: print the current index
+
+stvar for_IDX true
+
+:: for_IDX is a pre defined variable
+:: in the interpreter
+:: some pre defined variables are:
+
+::
+:: for_IDX
+:: cd
+:: arg1 to arg26
+::
+:: start
+:: stop
+:: step
+:: i
+::
+:: REF
+:: InpPrmP
+:: a1
+:: user
+:: PDIMM
+::
+::
+:: do not use these unless it is for debugging,
+:: it will crash the interpreter
+::
+:: fromif
+:: fromfor
+
+:: function (coming soon)
+
+:: function args set s variables
+
+fnc function x y z
+    echo This is a function
+    echo data:
+    echo.
+
+    :: Math
+    echo math
+    stvar a 1
+    stvar b 2
+    stvar st:a c a + b
+    gtvar c
+    echo.
+
+    :: Logical
+    echo logical
+    stvar d true
+    stvar e false
+
+    stvar st:l f or !d! !e!
+    gtvar f
+
+    stvar st:l g and !d! !e!
+    gtvar g
+
+    stvar st:l h not !e!
+    gtvar h
+    echo.
+
+    :: IF statement
+    echo If statement
+    if eqt !a! !c! echo a equals c
+
+    ::arguments
+    echo !x!
+    echo !y!
+    echo !z!
+
+
+endfnc
+
+:: functions are "fnc <name> <args>" and must end with "endfnc"
+
+:: to call functions:
+function 0 1 2
+
+:: type help for more commands
+
+:: (c) 2025 n12
+:: Latest 3/27
